@@ -2,7 +2,10 @@ module project
 
 go 1.23.4
 
-require github.com/spf13/viper v1.19.0
+require (
+	github.com/google/logger v1.1.1
+	github.com/spf13/viper v1.19.0
+)
 
 require (
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
