@@ -3,7 +3,9 @@ module project
 go 1.23.4
 
 require (
+	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
 	github.com/google/logger v1.1.1
+	github.com/google/uuid v1.4.0
 	github.com/jackc/pgx/v5 v5.7.2
 	github.com/spf13/viper v1.19.0
 )
