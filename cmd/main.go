@@ -1,6 +1,7 @@
 package main
 
 import (
+	"project/internal/database/postgres"
 	"project/pkg/tools"
 
 	"github.com/google/logger"
@@ -12,4 +13,5 @@ func main() {
 	viper.ReadInConfig()
 	file := tools.CreateLogFile()
 	defer logger.Init("logger", false, true, file).Close()
+	postgres.InitDB()
 }
