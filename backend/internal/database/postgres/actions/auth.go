@@ -69,7 +69,7 @@ func DeleteUser(token string) error {
 	query := `DELETE FROM users WHERE token = $1`
 	_, err := postgres.DB.Exec(context.Background(), query, token)
 	if err != nil {
-		return errors.New("failed to delete user")
+		return fmt.Errorf("failed to delete user: %w", err)
 	}
 	return nil
 }

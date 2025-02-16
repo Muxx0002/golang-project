@@ -27,31 +27,25 @@ func GenerateDoubleID() string {
 	return strings.ReplaceAll(GenerateID()+GenerateID(), "-", "")
 }
 
-func ValidateRegistration(email, password, username string) error {
-	if strings.TrimSpace(email) == "" {
+func ValidateRegistration(email, password, username *string) error {
+	if strings.TrimSpace(*email) == "" {
 		return errors.New("email cannot be empty")
 	}
-
-	if len(password) < 8 {
+	if len(*password) < 8 {
 		return errors.New("password must be at least 8 characters long")
 	}
-
-	if strings.TrimSpace(username) == "" {
+	if strings.TrimSpace(*username) == "" {
 		return errors.New("username cannot be empty")
 	}
-
-	if !govalidator.IsEmail(email) {
+	if !govalidator.IsEmail(*email) {
 		return errors.New("invalid email format")
 	}
-
-	if !isValidUsername(username) {
+	if !isValidUsername(*username) {
 		return errors.New("username can only contain letters, numbers, and the symbols _ -")
 	}
-
-	if err := validatePasswordComplexity(password); err != nil {
+	if err := validatePasswordComplexity(*password); err != nil {
 		return err
 	}
-
 	return nil
 }
 
