@@ -14,15 +14,14 @@ type Users struct {
 }
 
 type Article struct {
-	ID        int       `json:"id"`
+	ID        string    `json:"id"`
 	Title     string    `json:"title"`
 	Content   string    `json:"content"`
-	AuthorID  string    `json:"author_id"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
 type Comment struct {
-	ID        int       `json:"id"`
+	ID        string    `json:"id"`
 	Content   string    `json:"content"`
 	ArticleID int       `json:"article_id"`
 	UserID    string    `json:"user_id"`

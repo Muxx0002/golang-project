@@ -5,7 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func AuthMidleware(c *fiber.Ctx) error {
+func AuthMiddleware(c *fiber.Ctx) error {
 	token := c.Cookies("auth")
 	if token == "" {
 		return c.SendStatus(fiber.StatusUnauthorized)
@@ -15,5 +15,24 @@ func AuthMidleware(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusUnauthorized)
 	}
 	c.Locals("user", user)
+	path := c.Path()
+	if path == "/auth/sign-in" || path == "/auth/sign-up" {
+		return c.Redirect("/articles", fiber.StatusSeeOther)
+	}
+	return c.Next()
+}
+
+func IsAdmin(c *fiber.Ctx) error {
+	token := c.Cookies("auth")
+	if token == "" {
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+	user, err := actions.CheckUserByToken(token)
+	if err != nil || user.Role == "" {
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+	if user.ID != "admin" {
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
 	return c.Next()
 }

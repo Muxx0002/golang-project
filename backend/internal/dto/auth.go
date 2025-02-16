@@ -6,3 +6,12 @@ type AuthData struct {
 	Password     string `json:"password"`
 	RestoreToken string `json:"restore_token"`
 }
+
+type ArticleData struct {
+	Title   string `json:"title"`
+	Content string `json:"content"`
+}
+
+type CommentData struct {
+	Content string `json:"content"`
+}
