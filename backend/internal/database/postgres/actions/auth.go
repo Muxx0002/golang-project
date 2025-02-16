@@ -4,11 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"project/internal/database/postgres"
-	"project/internal/models"
-	"project/pkg/crypto"
-	"project/pkg/tools"
+
 	"time"
+
+	"github.com/Muxx0002/golang-project/tree/main/backend/internal/database/postgres"
+	"github.com/Muxx0002/golang-project/tree/main/backend/internal/models"
+	"github.com/Muxx0002/golang-project/tree/main/backend/pkg/crypto"
+	"github.com/Muxx0002/golang-project/tree/main/backend/pkg/tools"
+	"github.com/jackc/pgx"
 )
 
 func CreateUser(email, password, username, token string) error {
@@ -35,7 +38,10 @@ func CheckUser(password, email string) (models.Users, error) {
 		&user.UpdatedAt,
 	)
 	if err != nil {
-		return user, errors.New("password or username is invalid")
+		if errors.Is(err, pgx.ErrNoRows) {
+			return user, errors.New("invalid email or password")
+		}
+		return user, fmt.Errorf("failed to query user: %w", err)
 	}
 	return user, nil
 }
