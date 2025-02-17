@@ -1,4 +1,4 @@
-package midleware
+package middleware
 
 import (
 	"github.com/Muxx0002/golang-project/tree/main/backend/internal/database/postgres/actions"

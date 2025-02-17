@@ -58,7 +58,7 @@ func UpdateCommentByID(commentID string, newContent string) error {
 	return nil
 }
 
-func DeleteCommentByID(commentID int) error {
+func DeleteCommentByID(commentID string) error {
 	query := `DELETE FROM comments WHERE id = $1`
 	result, err := postgres.DB.Exec(context.Background(), query, commentID)
 	if err != nil {
@@ -67,7 +67,37 @@ func DeleteCommentByID(commentID int) error {
 
 	rowsAffected := result.RowsAffected()
 	if rowsAffected == 0 {
-		return fmt.Errorf("no comment found with id %d", commentID)
+		return fmt.Errorf("no comment found with id %s", commentID)
 	}
 	return nil
+}
+
+func GetAllComments() ([]models.Comment, error) {
+	var comments []models.Comment
+	query := `SELECT id, text, user_id, article_id, created_at FROM comments`
+	rows, err := postgres.DB.Query(context.Background(), query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch comments: %w", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var comment models.Comment
+		err := rows.Scan(
+			&comment.ID,
+			&comment.Content,
+			&comment.UserID,
+			&comment.ArticleID,
+			&comment.CreatedAt,
+		)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan comment: %w", err)
+		}
+		comments = append(comments, comment)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("error after iteration: %w", err)
+	}
+	return comments, nil
 }

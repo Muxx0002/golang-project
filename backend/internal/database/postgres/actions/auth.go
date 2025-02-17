@@ -60,7 +60,7 @@ func CheckUserByToken(token string) (models.Users, error) {
 		&user.UpdatedAt,
 	)
 	if err != nil {
-		return user, errors.New("user not found")
+		return user, fmt.Errorf("user not found: %w", err)
 	}
 	return user, nil
 }
